@@ -82,6 +82,26 @@ int main() {
     CS210.set_prereqs(just_110);
     check_is("acc4.5", CS210.get_prereqs() == CS240.get_prereqs());
 
+    // indirect accessor tests
+    check_is("ind_acc1", CS240.get_subject_name() == "Computer Science");
+    check_is("ind_acc2", CS240.get_subject_code() == "CS");
+    check_is("ind_acc3", MATH140.get_subject_name() == "Mathematics");
+    check_is("ind_acc4", MATH140.get_subject_code() == "MATH");
+    check_is("ind_acc5", CS110.get_full_code() == "CS110");
+    check_is("ind_acc6", MATH130.get_full_code() == "MATH130");
+    check_is("ind_acc7", CS210.get_full_name() == "CS210 Intermediate Computing W/ Data Structures");
+    check_is("ind_acc8", MATH140.get_full_name() == "MATH140 Calculus I");
+
+    check_is("codes1", CS310.get_prereq_codes_one_string() == "CS210, CS220, CS240");
+    check_is("codes2", CS410.get_prereq_codes_one_string() == "CS310");
+    check_is("codes3", MATH130.get_prereq_codes_one_string() == "");
+
+    // add_prereqs tests
+    Course CS449(CS, 449, "Introduction to Computer Security");
+    check_is("add_pre1", CS449.get_prereq_codes_one_string() == "");
+    CS449.add_prereqs(CS310, CS341);
+    check_is("add_pre1", CS449.get_prereq_codes_one_string() == "CS310, CS341");
+
     cout << "Hello World 2!" << endl;
     return 0;
 }

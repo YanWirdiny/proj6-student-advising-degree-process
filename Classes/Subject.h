@@ -34,7 +34,7 @@ const map<Subject, string> subj_map_to_name = {
     { ENGIN, "Engineering" },
     { ENGL, "English" },
     { HIST, "History" },
-    { MATH, "Math" },
+    { MATH, "Mathematics" },
     { MUSIC, "Music" },
     { PHIL, "Philosophy" },
     { PHYSIC, "Physics" },
