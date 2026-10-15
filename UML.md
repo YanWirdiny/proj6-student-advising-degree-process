@@ -119,7 +119,4 @@ getSeeds() → [filter CS_COURSE] → Fetcher.fetch(url)
   processed by `main`.
 - **CourseStorage** owns its `Course` objects (composition) and uses `seen_`
   to de-duplicate by course code.
-- **Politeness** is defined but not yet wired into `main.cpp` or
-  `CMakeLists.txt`, so it has no relationships in the pipeline above. (Shown
-  here as-is; note `politeness.cpp` currently has a mismatched constructor
-  name and `wait()` is not declared in the header.)
+- **Politeness** is defined and wired into `main.cpp`
