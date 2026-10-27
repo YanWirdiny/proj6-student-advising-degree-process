@@ -33,7 +33,7 @@ void check_nt(string test_name, bool condition) {
 
 
 
-int main() {
+int not_main() {
     cout << "Hello World!" << endl;
 
     // lots of courses to use as examples
