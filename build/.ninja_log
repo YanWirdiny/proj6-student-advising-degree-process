@@ -1,0 +1,14 @@
+# ninja log v7
+19	583	8149437537700082	CMakeFiles/advisor.dir/seeds.cpp.obj	c0ac357a31e713ad
+49	633	8149437538002683	CMakeFiles/advisor.dir/politeness.cpp.obj	311e8bb1196322c7
+9	633	8149437537600186	CMakeFiles/advisor.dir/main.cpp.obj	27d0193e040626f1
+38	667	8149437537890415	CMakeFiles/advisor.dir/parser.cpp.obj	5c1195ec1147a137
+29	1426	8149437537805229	CMakeFiles/advisor.dir/fetcher.cpp.obj	6b2ae8e60fb1f418
+62	2403	8149437538136334	CMakeFiles/advisor.dir/extractor_storage.cpp.obj	1cce07bf07ffec60
+75	2575	8149437538257016	CMakeFiles/advisor.dir/requirements.cpp.obj	ae7d1e473557b3b8
+2575	3118	8149437563258142	advisor.exe	97d7a36bd05467a1
+24	545	8149469682666715	CMakeFiles/advisor.dir/seeds.cpp.obj	c0ac357a31e713ad
+13	609	8149469682561064	CMakeFiles/advisor.dir/main.cpp.obj	27d0193e040626f1
+33	2253	8149469682758935	CMakeFiles/advisor.dir/extractor_storage.cpp.obj	1cce07bf07ffec60
+43	2637	8149469682857772	CMakeFiles/advisor.dir/requirements.cpp.obj	ae7d1e473557b3b8
+2637	3207	8149469708792076	advisor.exe	97d7a36bd05467a1

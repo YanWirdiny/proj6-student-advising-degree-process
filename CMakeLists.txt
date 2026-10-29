@@ -11,6 +11,7 @@ add_executable(advisor
     parser.cpp
     politeness.cpp
     extractor_storage.cpp
+    requirements.cpp
 )
 
 find_package(CURL REQUIRED)

@@ -43,5 +43,20 @@
     "CS671",
     "CS675",
     "CS680"
+  ],
+  "gen_ed_courses": [
+    "ENGL101",
+    "ENGL102"
+  ],
+  "distribution_courses": [
+    { "code": "MATH140", "area": "MT" },
+    { "code": "MATH141", "area": "MT" },
+    { "code": "MATH260", "area": "MT" },
+    { "code": "MATH345", "area": "MT" },
+    { "code": "PHYSIC113", "area": "NS" },
+    { "code": "PHYSIC181", "area": "NS" },
+    { "code": "PHYSIC114", "area": "NS" },
+    { "code": "PHYSIC182", "area": "NS" },
+    { "code": "MATH130", "area": "MT" }
   ]
 }
