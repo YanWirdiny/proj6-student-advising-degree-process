@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(advisor
-    main.cpp
-    seeds.cpp
-    fetcher.cpp
-    parser.cpp
-    politeness.cpp
-    extractor_storage.cpp
-    requirements.cpp
+    src/main.cpp
+    src/seeds.cpp
+    src/fetcher.cpp
+    src/parser.cpp
+    src/politeness.cpp
+    src/extractor_storage.cpp
+    src/requirements.cpp
 )
 
 find_package(CURL REQUIRED)
