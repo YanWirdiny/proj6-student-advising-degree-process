@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 using namespace std ;
 
 enum class SeedCategory {
@@ -17,5 +18,5 @@ struct Seed {
     SeedCategory category ;
 };
 
-vector<Seed> getSeeds();
+std::vector<Seed> getSeeds();
 
