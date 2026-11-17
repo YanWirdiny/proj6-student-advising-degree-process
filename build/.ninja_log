@@ -27,3 +27,7 @@
 2646	2862	8166321780847812	lib/libgmock.a	5b35e7b29991e6d5
 2863	2972	8166321783019837	lib/libgmock_main.a	ae719fb906c32461
 120	3136	8166321755584535	CMakeFiles/advisor.dir/src/requirements.cpp.obj	b6d07221c1b4f661
+12	999	8166340975010135	CMakeFiles/seeds_test.dir/test/seeds_test.cpp.obj	dfd2c04bd4c6cb17
+1000	2665	8166341001436080	seeds_test.exe	67799f3212cf4441
+1000	2665	8166341001436080	seeds_test_e3b0c442_tests.cmake	67799f3212cf4441
+1000	2665	8166341001436080	C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test_e3b0c442_tests.cmake	67799f3212cf4441
