@@ -1,0 +1,20 @@
+include("C:/msys64/ucrt64/share/cmake/Modules/GoogleTestAddTests.cmake")
+gtest_discover_tests_impl(
+  TEST_TARGET [==[seeds_test]==]
+  TEST_EXECUTABLE [==[C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test.exe]==]
+  TEST_EXECUTOR [==[]==]
+  TEST_WORKING_DIR [==[C:/Users/drawd/proj6-student-advising-degree-process/build]==]
+  TEST_EXTRA_ARGS [==[]==]
+  TEST_PROPERTIES [==[]==]
+  TEST_PREFIX [==[]==]
+  TEST_SUFFIX [==[]==]
+  TEST_FILTER [==[]==]
+  NO_PRETTY_TYPES [==[FALSE]==]
+  NO_PRETTY_VALUES [==[FALSE]==]
+  TEST_LIST [==[seeds_test_TESTS]==]
+  CTEST_FILE [==[C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test_e3b0c442_tests.cmake]==]
+  TEST_DISCOVERY_TIMEOUT [==[5]==]
+  TEST_DISCOVERY_EXTRA_ARGS [==[]==]
+  TEST_XML_OUTPUT_DIR [==[]==]
+  TEST_JSON_OUTPUT_DIR [==[C:/Users/drawd/proj6-student-advising-degree-process/build]==]
+)

@@ -1,0 +1,5 @@
+if(EXISTS "C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test_e3b0c442_tests.cmake")
+  include("C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test_e3b0c442_tests.cmake")
+else()
+  add_test(seeds_test_NOT_BUILT seeds_test_NOT_BUILT)
+endif()

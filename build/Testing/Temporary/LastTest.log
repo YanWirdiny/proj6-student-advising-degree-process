@@ -1,0 +1,57 @@
+Start testing: Nov 17 10:49 Eastern Standard Time
+----------------------------------------------------------
+1/2 Testing: SeedsTest.FixedSeedsHaveExpectedCategories
+1/2 Test: SeedsTest.FixedSeedsHaveExpectedCategories
+Command: "C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test.exe" "--gtest_filter=SeedsTest.FixedSeedsHaveExpectedCategories" "--gtest_also_run_disabled_tests"
+Directory: C:/Users/drawd/proj6-student-advising-degree-process/build
+"SeedsTest.FixedSeedsHaveExpectedCategories" start time: Nov 17 10:49 Eastern Standard Time
+Output:
+----------------------------------------------------------
+Running main() from C:/Users/drawd/proj6-student-advising-degree-process/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SeedsTest.FixedSeedsHaveExpectedCategories
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SeedsTest
+[ RUN      ] SeedsTest.FixedSeedsHaveExpectedCategories
+[       OK ] SeedsTest.FixedSeedsHaveExpectedCategories (0 ms)
+[----------] 1 test from SeedsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"SeedsTest.FixedSeedsHaveExpectedCategories" end time: Nov 17 10:49 Eastern Standard Time
+"SeedsTest.FixedSeedsHaveExpectedCategories" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm
+2/2 Test: SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm
+Command: "C:/Users/drawd/proj6-student-advising-degree-process/build/seeds_test.exe" "--gtest_filter=SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm" "--gtest_also_run_disabled_tests"
+Directory: C:/Users/drawd/proj6-student-advising-degree-process/build
+"SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm" start time: Nov 17 10:49 Eastern Standard Time
+Output:
+----------------------------------------------------------
+Running main() from C:/Users/drawd/proj6-student-advising-degree-process/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SeedsTest
+[ RUN      ] SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm
+[       OK ] SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm (0 ms)
+[----------] 1 test from SeedsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm" end time: Nov 17 10:49 Eastern Standard Time
+"SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 17 10:49 Eastern Standard Time

@@ -1,0 +1,3 @@
+SeedsTest.FixedSeedsHaveExpectedCategories 3 0.00577147
+SeedsTest.DistributionCourseSeedsCoverEveryAreaAndTerm 3 0.0050629
+---

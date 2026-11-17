@@ -1,0 +1,22 @@
+{
+  "tests": 2,
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "SeedsTest",
+      "tests": 2,
+      "testsuite": [
+        {
+          "name": "FixedSeedsHaveExpectedCategories",
+          "file": "C:\/Users\/drawd\/proj6-student-advising-degree-process\/test\/seeds_test.cpp",
+          "line": 7
+        },
+        {
+          "name": "DistributionCourseSeedsCoverEveryAreaAndTerm",
+          "file": "C:\/Users\/drawd\/proj6-student-advising-degree-process\/test\/seeds_test.cpp",
+          "line": 23
+        }
+      ]
+    }
+  ]
+}
