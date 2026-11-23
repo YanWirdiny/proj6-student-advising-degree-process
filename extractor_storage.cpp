@@ -2,16 +2,16 @@
 #include <regex>
 #include <fstream>
 
-// Pattern: "CS" followed by exactly 3 digits, then any trailing alphanumeric chars.
-// Matches tokens like CS101, CS341L, CS450 — stops at any non-alphanumeric character.
-static const std::regex kCoursePattern(R"(\bCS\d{3}[A-Za-z0-9]*)");
+// Accept whitespace between CS and the number; preserve existing suffix rules.
+// Capture the number and suffix separately from the optional whitespace.
+static const std::regex kCoursePattern(R"(\bCS\s*(\d{3}[A-Za-z0-9]*))");
 
 std::vector<Course> CourseExtractor::extract(const std::string& text) const {
     std::vector<Course> results;
     auto begin = std::sregex_iterator(text.begin(), text.end(), kCoursePattern);
     auto end   = std::sregex_iterator();
     for (auto it = begin; it != end; ++it)
-        results.push_back({ it->str() });
+        results.push_back({ "CS" + (*it)[1].str() });
     return results;
 }
 
@@ -34,3 +34,4 @@ void CourseStorage::save() const {
     }
     out << "  ]\n}\n";
 }
+
