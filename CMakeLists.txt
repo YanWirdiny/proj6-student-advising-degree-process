@@ -5,24 +5,42 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(advisor
-    main.cpp
-    seeds.cpp
-    fetcher.cpp
-    parser.cpp
-    politeness.cpp
-    extractor_storage.cpp
+    src/main.cpp
+    src/seeds.cpp
+    src/fetcher.cpp
+    src/parser.cpp
+    src/politeness.cpp
+    src/extractor_storage.cpp
+    src/requirements.cpp
 )
 
 find_package(CURL REQUIRED)
 target_link_libraries(advisor CURL::libcurl)
 
-include(CTest)
-if(BUILD_TESTING)
-    add_executable(course_extractor_test
-        tests/course_extractor_test.cpp
-        extractor_storage.cpp
-    )
-    target_include_directories(course_extractor_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-    add_test(NAME course_extractor COMMAND course_extractor_test)
-endif()
+# ---- Tests ----
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+FetchContent_MakeAvailable(googletest)
 
+enable_testing()
+add_executable(seeds_test
+    test/seeds_test.cpp
+    src/seeds.cpp
+)
+target_include_directories(seeds_test PRIVATE src)
+target_link_libraries(seeds_test GTest::gtest_main)
+
+add_executable(course_extractor_test
+    test/course_extractor_test.cpp
+    src/extractor_storage.cpp
+)
+target_include_directories(course_extractor_test PRIVATE src)
+target_link_libraries(course_extractor_test GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(seeds_test)
+gtest_discover_tests(course_extractor_test)
