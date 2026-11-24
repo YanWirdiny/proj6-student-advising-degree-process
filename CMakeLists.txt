@@ -41,6 +41,14 @@ add_executable(course_extractor_test
 target_include_directories(course_extractor_test PRIVATE src)
 target_link_libraries(course_extractor_test GTest::gtest_main)
 
+add_executable(course_code_test
+    test/course_code_test.cpp
+    src/course_code.cpp
+)
+target_include_directories(course_code_test PRIVATE src)
+target_link_libraries(course_code_test GTest::gtest_main)
+
 include(GoogleTest)
 gtest_discover_tests(seeds_test)
 gtest_discover_tests(course_extractor_test)
+gtest_discover_tests(course_code_test)
