@@ -48,7 +48,16 @@ add_executable(course_code_test
 target_include_directories(course_code_test PRIVATE src)
 target_link_libraries(course_code_test GTest::gtest_main)
 
+add_executable(student_test
+    test/student_test.cpp
+    src/student.cpp
+    src/course_code.cpp
+)
+target_include_directories(student_test PRIVATE src)
+target_link_libraries(student_test GTest::gtest_main)
+
 include(GoogleTest)
 gtest_discover_tests(seeds_test)
 gtest_discover_tests(course_extractor_test)
 gtest_discover_tests(course_code_test)
+gtest_discover_tests(student_test)
