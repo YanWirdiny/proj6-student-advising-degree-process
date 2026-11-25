@@ -10,10 +10,16 @@ enum class CourseCategory {
     DISTRIBUTION    // course carrying an AR/HU/MT/NS/SB/WC/WL designation (Math -> MT, Physics -> NS)
 };
 
+// One catalog course. Plain data: the catalog (Courses) keeps codes normalized and unique.
+// Field order matters: the scraper builds these as { code, category, distArea }.
 struct Course {
-    std::string    code;       // e.g. "CS110", "MATH140", "ENGL101"
-    CourseCategory category;
-    std::string    distArea;   // distribution code when category is DISTRIBUTION, else empty
+    std::string              code;                              // e.g. "CS110", "MATH140", "ENGL101"
+    CourseCategory           category = CourseCategory::GEN_ED;
+    std::string              distArea;   // distribution code ("MT", "HU", ...) or empty. A CS course
+                                         // may carry one too: CS110 is CS and counts toward MT.
+    std::string              name;       // e.g. "Introduction to Computing"; empty when unknown
+    double                   credits = 0;  // 0 = unknown
+    std::vector<std::string> prereqs;    // prerequisite course codes, e.g. {"CS210", "CS220"}
 };
 
 // One item of the general education program, e.g. "Two courses in writing and composition".

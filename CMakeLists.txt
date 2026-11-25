@@ -4,21 +4,35 @@ project(student_advising)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(advisor
-    src/main.cpp
-    src/seeds.cpp
-    src/fetcher.cpp
-    src/parser.cpp
-    src/politeness.cpp
-    src/extractor_storage.cpp
-    src/requirements.cpp
+include(FetchContent)
+
+# nlohmann/json: reads the JSON files the scraper wrote (header-only)
+FetchContent_Declare(
+    json
+    URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
+FetchContent_MakeAvailable(json)
+
+# ---- Backend (src/*): the advising logic. Never includes scraper code. ----
+file(GLOB BACKEND_SOURCES CONFIGURE_DEPENDS src/*.cpp)
+add_library(backend ${BACKEND_SOURCES})
+target_include_directories(backend PUBLIC src)
+target_link_libraries(backend PRIVATE nlohmann_json::nlohmann_json)
+
+# ---- Scraper (src/scraper/*): fetches the UMB pages and writes the JSON files ----
+file(GLOB SCRAPER_SOURCES CONFIGURE_DEPENDS src/scraper/*.cpp)
+list(REMOVE_ITEM SCRAPER_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/scraper/main.cpp)
+add_library(scraper_lib ${SCRAPER_SOURCES})
+target_include_directories(scraper_lib PUBLIC src/scraper src)
 
 find_package(CURL REQUIRED)
-target_link_libraries(advisor CURL::libcurl)
+target_link_libraries(scraper_lib PUBLIC CURL::libcurl)
+
+add_executable(scraper src/scraper/main.cpp)
+target_link_libraries(scraper scraper_lib)
 
 # ---- Tests ----
-include(FetchContent)
 FetchContent_Declare(
     googletest
     URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
@@ -27,37 +41,24 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-add_executable(seeds_test
-    test/seeds_test.cpp
-    src/seeds.cpp
-)
-target_include_directories(seeds_test PRIVATE src)
-target_link_libraries(seeds_test GTest::gtest_main)
-
-add_executable(course_extractor_test
-    test/course_extractor_test.cpp
-    src/extractor_storage.cpp
-)
-target_include_directories(course_extractor_test PRIVATE src)
-target_link_libraries(course_extractor_test GTest::gtest_main)
-
-add_executable(course_code_test
-    test/course_code_test.cpp
-    src/course_code.cpp
-)
-target_include_directories(course_code_test PRIVATE src)
-target_link_libraries(course_code_test GTest::gtest_main)
-
-add_executable(student_test
-    test/student_test.cpp
-    src/student.cpp
-    src/course_code.cpp
-)
-target_include_directories(student_test PRIVATE src)
-target_link_libraries(student_test GTest::gtest_main)
-
 include(GoogleTest)
-gtest_discover_tests(seeds_test)
-gtest_discover_tests(course_extractor_test)
-gtest_discover_tests(course_code_test)
-gtest_discover_tests(student_test)
+
+# Backend tests: test/*_test.cpp, each its own executable linked to the backend
+file(GLOB BACKEND_TESTS CONFIGURE_DEPENDS test/*_test.cpp)
+foreach(test_src ${BACKEND_TESTS})
+    get_filename_component(test_name ${test_src} NAME_WE)
+    add_executable(${test_name} ${test_src})
+    target_link_libraries(${test_name} backend GTest::gtest_main)
+    # lets tests open the real JSON files at the project root
+    target_compile_definitions(${test_name} PRIVATE PROJECT_DIR="${CMAKE_SOURCE_DIR}")
+    gtest_discover_tests(${test_name})
+endforeach()
+
+# Scraper tests: test/scraper/*_test.cpp, linked to the scraper library
+file(GLOB SCRAPER_TESTS CONFIGURE_DEPENDS test/scraper/*_test.cpp)
+foreach(test_src ${SCRAPER_TESTS})
+    get_filename_component(test_name ${test_src} NAME_WE)
+    add_executable(${test_name} ${test_src})
+    target_link_libraries(${test_name} scraper_lib GTest::gtest_main)
+    gtest_discover_tests(${test_name})
+endforeach()

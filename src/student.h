@@ -12,7 +12,7 @@ struct CourseRecord {
     string  code;                         
     string  term;
     string  grade;                         
-    double       credits = 0;                  
+    double  credits = 0;                  
     CourseStatus status  = CourseStatus::COMPLETED;
     CourseSource source  = CourseSource::UMB;
 };
@@ -24,7 +24,7 @@ struct StudentInfo {
     string major;          
     string catalogYear;       
     string entryTerm;          
-    double      auditCredits = 0;  
+    double auditCredits = 0;  
 };
 
 // A student's course history. The record list is the single source of truth:
