@@ -3,6 +3,8 @@ project(student_advising)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Writes build/compile_commands.json so the editor (clangd) finds gtest, httplib and json headers.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(FetchContent)
 
@@ -19,6 +21,27 @@ file(GLOB BACKEND_SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_library(backend ${BACKEND_SOURCES})
 target_include_directories(backend PUBLIC src)
 target_link_libraries(backend PRIVATE nlohmann_json::nlohmann_json)
+
+# ---- Web server (src/server/*): the "advisor" program, HTTP API over the backend ----
+# cpp-httplib: single-header HTTP server. Plain HTTP on localhost only, so no TLS/compression.
+set(HTTPLIB_USE_OPENSSL_IF_AVAILABLE OFF CACHE BOOL "" FORCE)
+set(HTTPLIB_USE_ZLIB_IF_AVAILABLE    OFF CACHE BOOL "" FORCE)
+set(HTTPLIB_USE_BROTLI_IF_AVAILABLE  OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    httplib
+    URL https://github.com/yhirose/cpp-httplib/archive/refs/tags/v0.18.0.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+FetchContent_MakeAvailable(httplib)
+
+file(GLOB SERVER_SOURCES CONFIGURE_DEPENDS src/server/*.cpp)
+list(REMOVE_ITEM SERVER_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/server/main.cpp)
+add_library(server_lib ${SERVER_SOURCES})
+target_include_directories(server_lib PUBLIC src/server)
+target_link_libraries(server_lib PUBLIC backend nlohmann_json::nlohmann_json httplib::httplib)
+
+add_executable(advisor src/server/main.cpp)
+target_link_libraries(advisor server_lib)
 
 # ---- Scraper (src/scraper/*): fetches the UMB pages and writes the JSON files ----
 file(GLOB SCRAPER_SOURCES CONFIGURE_DEPENDS src/scraper/*.cpp)
@@ -50,6 +73,16 @@ foreach(test_src ${BACKEND_TESTS})
     add_executable(${test_name} ${test_src})
     target_link_libraries(${test_name} backend GTest::gtest_main)
     # lets tests open the real JSON files at the project root
+    target_compile_definitions(${test_name} PRIVATE PROJECT_DIR="${CMAKE_SOURCE_DIR}")
+    gtest_discover_tests(${test_name})
+endforeach()
+
+# Server tests: test/server/*_test.cpp, linked to the server library
+file(GLOB SERVER_TESTS CONFIGURE_DEPENDS test/server/*_test.cpp)
+foreach(test_src ${SERVER_TESTS})
+    get_filename_component(test_name ${test_src} NAME_WE)
+    add_executable(${test_name} ${test_src})
+    target_link_libraries(${test_name} server_lib GTest::gtest_main)
     target_compile_definitions(${test_name} PRIVATE PROJECT_DIR="${CMAKE_SOURCE_DIR}")
     gtest_discover_tests(${test_name})
 endforeach()

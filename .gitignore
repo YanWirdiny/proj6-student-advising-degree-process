@@ -1,1 +1,5 @@
-build/ 
+build/
+
+# web frontend
+web/node_modules/
+web/dist/

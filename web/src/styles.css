@@ -1,0 +1,54 @@
+/* Design tokens from doc/design (DESIGN_HANDOFF.md section 1). Orange and green are never used. */
+:root {
+  --umb-beacon-blue: #005a8b;
+  --umb-navy: #132245;
+  --umb-light-blue: #78afe9;
+  --umb-yellow: #fede42;
+
+  --bg: #f3f6fa;
+  --surface: #ffffff;
+  --border: #dce3ec;
+  --muted: #5b6b85;
+  --subtle: #eaf2fb;
+
+  --status-done: #5b6b85;
+  --status-progress: #fede42;
+  --status-planned: #78afe9;
+  --status-remaining: #b4bfce;
+
+  --radius-card: 12px;
+  --radius-input: 8px;
+  --radius-node: 23px;
+
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  color: var(--umb-navy);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); }
+
+.navbar {
+  display: flex; align-items: center; gap: 16px;
+  height: 72px; padding: 0 40px;
+  background: var(--umb-beacon-blue); color: #fff;
+}
+.navbar strong { font-size: 17px; letter-spacing: 0.02em; }
+
+main { padding: 32px 40px 48px; }
+h1 { font-size: 30px; margin: 0 0 16px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  max-width: 640px;
+}
+.card .label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.card .value { font-size: 22px; font-weight: 700; color: var(--umb-beacon-blue); }
+.card ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+.error { color: var(--umb-navy); background: var(--subtle); border-left: 4px solid var(--umb-yellow); padding: 8px 12px; }
+
+@media (max-width: 640px) {
+  .navbar, main { padding-left: 16px; padding-right: 16px; }
+}
