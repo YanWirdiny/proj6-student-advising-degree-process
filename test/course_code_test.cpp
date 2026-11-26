@@ -32,3 +32,11 @@ TEST(CourseCodeTest, RejectsMalformed) {
     EXPECT_EQ(normalizeCode("CS"), "");
     EXPECT_EQ(normalizeCode("110"), "");
 }
+
+TEST(SubjectOfTest, SplitsSubject) {
+    EXPECT_EQ(subjectOf("CS310"), "CS");
+    EXPECT_EQ(subjectOf("PHYSIC113"), "PHYSIC");
+    EXPECT_EQ(subjectOf("CS285L"), "CS");
+    EXPECT_EQ(subjectOf("FREE"), "FREE");
+    EXPECT_EQ(subjectOf(""), "");
+}

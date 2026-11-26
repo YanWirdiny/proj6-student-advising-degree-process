@@ -26,6 +26,15 @@ public:
     size_t                     size() const { return byCode_.size(); }
     const map<string, Course>& all()  const { return byCode_; }
 
+    // Courses matching `query`, most relevant first; ties ordered by code. Case and spaces in
+    // codes don't matter. Relevance:
+    //   1. the query is exactly a code          "cs 310"    -> CS310
+    //   2. a code starts with the query         "cs 4", "math"
+    //   3. every word of the query starts a word of the title
+    //                                           "data struct" -> CS210, CS310 ("cs" won't match "Physics")
+    // An empty or blank query returns every course.
+    vector<Course> search(const string& query) const;
+
     // Courses of one category, or carrying one distribution area, ordered by code.
     vector<Course> inCategory(CourseCategory category) const;
     vector<Course> inArea(const string& area) const;

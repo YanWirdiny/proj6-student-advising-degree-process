@@ -27,3 +27,8 @@ string normalizeCode(const string& raw) {
 
     return subject + compact.substr(firstDigit);
 }
+
+string subjectOf(const string& code) {
+    size_t firstDigit = code.find_first_of("0123456789");
+    return firstDigit == string::npos ? code : code.substr(0, firstDigit);
+}

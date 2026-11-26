@@ -220,9 +220,9 @@ interface DashboardSummary {
 
 | Method | Path | Status |
 |---|---|---|
-| GET | `/api/health` | 🔧 phase 0 |
-| GET | `/api/courses` | 🔧 phase 2 |
-| GET | `/api/courses/:code` | 🔧 phase 2 |
+| GET | `/api/health` | ✅ |
+| GET | `/api/courses` | ✅ (`satisfies` always `null` until the Advisor) |
+| GET | `/api/courses/:code` | ✅ |
 | GET | `/api/me/dashboard` | 🔧 needs gaps B, C, E |
 | POST | `/api/plan/entries` | 🔧 needs gap D |
 | PATCH | `/api/plan/entries/:id` | 🔧 needs gap D |
@@ -237,11 +237,11 @@ interface DashboardSummary {
 #### `GET /api/courses?q=cs%204&group=cs&limit=20`
 | Param | Meaning |
 |---|---|
-| `q` | code prefix (any spelling: `cs 4`, `CS4`) or words in the title; empty = all |
-| `group` | `cs` \| `math_science` \| `gen_ed` \| `elective` (optional) |
+| `q` | code prefix (any spelling: `cs 4`, `CS4`) or words that **start** title words (`data struct` matches "Data Structures"; `cs` does not match "Physics"); empty = all |
+| `group` | `cs` \| `math_science` \| `gen_ed` \| `elective` (optional). Until the Advisor exists it is derived from the course alone: CS course → `cs`, MATH/PHYSIC → `math_science`, else `gen_ed`; `elective` returns nothing |
 | `subject` | `CS`, `MATH`, … (optional) |
 | `term`, `open` | ⏳ accepted and ignored until offering / seat data exists |
-| `limit` | default 20, max 100 |
+| `limit` | default 20; values above 100 are capped; non-numbers or < 1 → `400` |
 
 ```json
 { "total": 5,

@@ -1,5 +1,6 @@
 #include "courses.h"
 #include "course_code.h"
+#include <cctype>
 
 using namespace std;
 
@@ -71,6 +72,60 @@ bool Courses::merge(Course course) {
 const Course* Courses::find(const string& code) const {
     auto it = byCode_.find(normalizeCode(code));
     return it == byCode_.end() ? nullptr : &it->second;
+}
+
+// Query without whitespace, upper-cased: "cs 4" -> "CS4". Compared against code prefixes.
+static string compactUpper(const string& s) {
+    string out;
+    for (char c : s)
+        if (!isspace(static_cast<unsigned char>(c))) out += static_cast<char>(toupper(static_cast<unsigned char>(c)));
+    return out;
+}
+
+// Lower-case runs of letters and digits: "Probability & Statistics" -> {"probability", "statistics"}.
+static vector<string> words(const string& s) {
+    vector<string> out;
+    string current;
+    for (char c : s) {
+        unsigned char u = static_cast<unsigned char>(c);
+        if (isalnum(u)) current += static_cast<char>(tolower(u));
+        else if (!current.empty()) { out.push_back(current); current.clear(); }
+    }
+    if (!current.empty()) out.push_back(current);
+    return out;
+}
+
+// True when every query term is the start of some word of the title:
+// "data struct" matches "Data Structures", but "cs" does not match "Physics".
+static bool titleMatches(const vector<string>& terms, const string& title) {
+    if (terms.empty()) return false;
+    vector<string> titleWords = words(title);
+    for (const string& term : terms) {
+        bool found = false;
+        for (const string& w : titleWords)
+            if (w.rfind(term, 0) == 0) { found = true; break; }
+        if (!found) return false;
+    }
+    return true;
+}
+
+vector<Course> Courses::search(const string& query) const {
+    string         exact  = normalizeCode(query);   // "" when the query isn't a code
+    string         prefix = compactUpper(query);
+    vector<string> terms  = words(query);
+
+    // rank 0 = exact code, 1 = code prefix, 2 = title words; map order keeps ties sorted by code.
+    vector<Course> byRank[3];
+    for (const auto& [code, course] : byCode_) {
+        if (prefix.empty())                          { byRank[1].push_back(course); continue; }
+        if (!exact.empty() && code == exact)         { byRank[0].push_back(course); continue; }
+        if (code.rfind(prefix, 0) == 0)              { byRank[1].push_back(course); continue; }
+        if (titleMatches(terms, course.name))         byRank[2].push_back(course);
+    }
+
+    vector<Course> out;
+    for (auto& group : byRank) out.insert(out.end(), group.begin(), group.end());
+    return out;
 }
 
 vector<Course> Courses::inCategory(CourseCategory category) const {

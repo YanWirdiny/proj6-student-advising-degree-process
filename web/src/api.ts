@@ -1,4 +1,4 @@
-import type { ApiError, Health } from "./types";
+import type { ApiError, Course, Health, SearchQuery, SearchResponse } from "./types";
 
 // Thrown for any non-2xx response; carries the contract's error body.
 export class ApiRequestError extends Error {
@@ -19,6 +19,19 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (res.status === 204 ? undefined : await res.json()) as T;
 }
 
+function searchPath(query: SearchQuery): string {
+  const params = new URLSearchParams({ q: query.q });
+  if (query.group) params.set("group", query.group);
+  if (query.subject) params.set("subject", query.subject);
+  if (query.limit) params.set("limit", String(query.limit));
+  return `/api/courses?${params}`;
+}
+
 export const api = {
   health: () => request<Health>("/api/health"),
+  // Pass an AbortSignal so a newer search can cancel an older one still in flight.
+  searchCourses: (query: SearchQuery, signal?: AbortSignal) =>
+    request<SearchResponse>(searchPath(query), { signal }),
+  course: (code: string) =>
+    request<{ course: Course; satisfies: string | null }>(`/api/courses/${encodeURIComponent(code)}`),
 };

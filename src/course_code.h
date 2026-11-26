@@ -9,3 +9,7 @@
 // "Math 140", "Physics113", "English  101", "EDC U 212".
 // Returns "" when there is no subject or no number.
 std::string normalizeCode(const std::string& raw);
+
+// Subject part of a canonical code: "CS310" -> "CS", "PHYSIC113" -> "PHYSIC".
+// A code without digits (placeholder slot such as "FREE") is returned whole.
+std::string subjectOf(const std::string& code);

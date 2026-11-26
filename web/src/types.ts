@@ -48,3 +48,13 @@ export interface DashboardSummary {
 export interface Health { status: "ok"; courses: number; dataErrors: string[] }
 
 export interface ApiError { error: string; unmetPrereqs?: string[] }
+
+export interface SearchResult { course: Course; satisfies: string | null }
+export interface SearchResponse { total: number; results: SearchResult[] }
+
+export interface SearchQuery {
+  q: string;
+  group?: Group;
+  subject?: string;
+  limit?: number;
+}

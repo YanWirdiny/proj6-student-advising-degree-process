@@ -151,3 +151,63 @@ TEST(CoursesQueryTest, FindMissingReturnsNull) {
     EXPECT_EQ(catalog.find("CS110"), nullptr);
     EXPECT_EQ(catalog.find(""), nullptr);
 }
+
+// ---- search ----
+
+static Courses searchCatalog() {
+    Courses catalog;
+    catalog.add(csCourse("CS210", "Intermediate Computing with Data Structures"));
+    catalog.add(csCourse("CS310", "Advanced Data Structures and Algorithms"));
+    catalog.add(csCourse("CS410", "Introduction to Software Engineering"));
+    catalog.add(csCourse("CS411", "Competitive Programming"));
+    catalog.add(csCourse("CS31"));                       // odd code, to test prefix vs exact
+    catalog.add(distCourse("MATH140", "MT", "Calculus I"));
+    catalog.add(distCourse("MATH141", "MT", "Calculus II"));
+    return catalog;
+}
+
+static vector<string> codes(const vector<Course>& courses) {
+    vector<string> out;
+    for (const Course& c : courses) out.push_back(c.code);
+    return out;
+}
+
+TEST(CoursesSearchTest, ExactCodeFirstThenPrefix) {
+    // "cs 31" is exactly CS31 and also a prefix of CS310: the exact match comes first.
+    EXPECT_EQ(codes(searchCatalog().search("cs 31")), (vector<string>{ "CS31", "CS310" }));
+}
+
+TEST(CoursesSearchTest, CodePrefixAnySpelling) {
+    vector<string> expected{ "CS410", "CS411" };
+    EXPECT_EQ(codes(searchCatalog().search("cs 4")), expected);
+    EXPECT_EQ(codes(searchCatalog().search("CS4")), expected);
+    EXPECT_EQ(codes(searchCatalog().search("  cs4  ")), expected);
+}
+
+TEST(CoursesSearchTest, SubjectAlone) {
+    EXPECT_EQ(codes(searchCatalog().search("math")), (vector<string>{ "MATH140", "MATH141" }));
+}
+
+TEST(CoursesSearchTest, TitleWordsAllMustMatch) {
+    EXPECT_EQ(codes(searchCatalog().search("data struct")), (vector<string>{ "CS210", "CS310" }));
+    EXPECT_EQ(codes(searchCatalog().search("advanced data")), (vector<string>{ "CS310" }));
+    EXPECT_EQ(codes(searchCatalog().search("CALCULUS")), (vector<string>{ "MATH140", "MATH141" }));
+}
+
+TEST(CoursesSearchTest, CodeMatchesRankAboveTitleMatches) {
+    Courses catalog = searchCatalog();
+    catalog.add(csCourse("CS101", "Math for Computing"));   // "math" in the title only
+    EXPECT_EQ(codes(catalog.search("math")), (vector<string>{ "MATH140", "MATH141", "CS101" }));
+}
+
+TEST(CoursesSearchTest, EmptyQueryReturnsAllInCodeOrder) {
+    Courses catalog = searchCatalog();
+    EXPECT_EQ(catalog.search("").size(), catalog.size());
+    EXPECT_EQ(catalog.search("   ").size(), catalog.size());
+    EXPECT_EQ(catalog.search("").front().code, "CS210");
+}
+
+TEST(CoursesSearchTest, NoMatch) {
+    EXPECT_TRUE(searchCatalog().search("quantum").empty());
+    EXPECT_TRUE(searchCatalog().search("cs 9").empty());
+}
