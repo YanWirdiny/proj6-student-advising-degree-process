@@ -19,6 +19,16 @@ using namespace std;
 bool loadCourses(const string& csCoursesPath, const string& genEdPath,
                  Courses& out, vector<string>& errors);
 
+// course_details.json (hand-maintained, never written by the scraper) -> title, credits,
+// prereqs, coreqs and note for each course, merged into `out`. Call after loadCourses so
+// these details land on the scraped courses; courses only listed here (e.g. CS341L) are added.
+// Returns false when the file cannot be read or parsed.
+bool loadCourseDetails(const string& detailsPath, Courses& out, vector<string>& errors);
+
+// Every prereq and coreq must name a course in the catalog, and prerequisites must not
+// form a cycle (a course that, through its chain, requires itself). Returns true when clean.
+bool checkCourseReferences(const Courses& catalog, vector<string>& errors);
+
 // gen_ed_requirements.json "gen_ed" -> requirements, course codes normalized.
 vector<GenEdRequirement> loadGenEd(const string& genEdPath, vector<string>& errors);
 

@@ -19,7 +19,9 @@ struct Course {
                                          // may carry one too: CS110 is CS and counts toward MT.
     std::string              name;       // e.g. "Introduction to Computing"; empty when unknown
     double                   credits = 0;  // 0 = unknown
-    std::vector<std::string> prereqs;    // prerequisite course codes, e.g. {"CS210", "CS220"}
+    std::vector<std::string> prereqs;    // must be completed BEFORE the term, e.g. {"CS210", "CS220"}
+    std::vector<std::string> coreqs;     // may be taken in the same term or earlier, e.g. {"CS341L"}
+    std::string              note;       // rules not modelled above, shown to the student as-is
 };
 
 // One item of the general education program, e.g. "Two courses in writing and composition".

@@ -1,0 +1,688 @@
+{
+  "_meta": {
+    "source": "cs.umb.edu/academics/courses and courses.umb.edu, checked 2026-11-26",
+    "prereqRules": [
+      "prereqs = courses that must be completed BEFORE the term (AND list)",
+      "coreqs = may be taken in the same term or earlier",
+      "OR-alternatives collapsed to the standard CS-major path (see _notes per course)",
+      "placement-based prereqs (ALEKS / MATH130 grade B) are omitted; treat as satisfied"
+    ]
+  },
+  "courses": [
+    {
+      "code": "CS110",
+      "category": "CS",
+      "area": "MT",
+      "title": "Introduction to Computing",
+      "credits": 4,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "MATH130 (B) or ALEKS placement into MATH140"
+    },
+    {
+      "code": "CS210",
+      "category": "CS",
+      "area": "MT",
+      "title": "Intermediate Computing with Data Structures",
+      "credits": 4,
+      "prereqs": [
+        "CS110"
+      ],
+      "coreqs": [],
+      "note": "CS110 or CS/IT 115L (C-), and MATH130 or permission"
+    },
+    {
+      "code": "CS220",
+      "category": "CS",
+      "area": "",
+      "title": "Applied Discrete Mathematics",
+      "credits": 3,
+      "prereqs": [
+        "CS110",
+        "MATH140"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS240",
+      "category": "CS",
+      "area": "",
+      "title": "Programming in C",
+      "credits": 3,
+      "prereqs": [
+        "CS110"
+      ],
+      "coreqs": [],
+      "note": "CS110 or CS/IT 115L"
+    },
+    {
+      "code": "CS285L",
+      "category": "CS",
+      "area": "",
+      "title": "Social Issues and Ethics in Computing",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS310",
+      "category": "CS",
+      "area": "",
+      "title": "Advanced Data Structures and Algorithms",
+      "credits": 3,
+      "prereqs": [
+        "CS210",
+        "CS220",
+        "CS240"
+      ],
+      "coreqs": [],
+      "note": "CS210 and CS220 with C- or better; MATH320 can replace CS220"
+    },
+    {
+      "code": "CS341",
+      "category": "CS",
+      "area": "",
+      "title": "Computer Architecture and Organization",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [
+        "CS341L"
+      ],
+      "note": "Dept page lists no prereq; must be taken with the CS341L lab"
+    },
+    {
+      "code": "CS341L",
+      "category": "CS",
+      "area": "",
+      "title": "Computer Architecture and Organization Lab",
+      "credits": 1,
+      "prereqs": [],
+      "coreqs": [
+        "CS341"
+      ],
+      "note": "Lab taken together with CS341; title and credits to verify on the catalog page"
+    },
+    {
+      "code": "CS410",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to Software Engineering",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": "ALSO requires any one other CS4xx course; enforce in code"
+    },
+    {
+      "code": "CS411",
+      "category": "CS",
+      "area": "",
+      "title": "Competitive Programming",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS420",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to the Theory of Computation",
+      "credits": 3,
+      "prereqs": [
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS430",
+      "category": "CS",
+      "area": "",
+      "title": "Database Management Systems",
+      "credits": 3,
+      "prereqs": [
+        "CS240",
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS433",
+      "category": "CS",
+      "area": "",
+      "title": "Big Data Analytics",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "MATH260",
+        "MATH345"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS436",
+      "category": "CS",
+      "area": "",
+      "title": "Database Application Development",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS430"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS437",
+      "category": "CS",
+      "area": "",
+      "title": "Database-Backed Web Sites and Web Services",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS430"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS438",
+      "category": "CS",
+      "area": "",
+      "title": "Applied Machine Learning",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS442",
+      "category": "CS",
+      "area": "",
+      "title": "Cybersecurity in the Internet of Things",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS443",
+      "category": "CS",
+      "area": "",
+      "title": "Mobile Applications",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS444",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to Operating Systems",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS341"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS446",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to Internetworking",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS341"
+      ],
+      "coreqs": [
+        "CS444"
+      ],
+      "note": ""
+    },
+    {
+      "code": "CS449",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to Computer Security",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS341"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS450",
+      "category": "CS",
+      "area": "",
+      "title": "The Structure of Higher Level Languages",
+      "credits": 3,
+      "prereqs": [
+        "CS220",
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS451",
+      "category": "CS",
+      "area": "",
+      "title": "Compilers",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS420"
+      ],
+      "coreqs": [],
+      "note": "CS420 or CS622"
+    },
+    {
+      "code": "CS460",
+      "category": "CS",
+      "area": "",
+      "title": "Graphics",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "MATH260"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS461",
+      "category": "CS",
+      "area": "",
+      "title": "Computer Games Programming",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS470",
+      "category": "CS",
+      "area": "",
+      "title": "Introduction to Artificial Intelligence",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS615",
+      "category": "CS",
+      "area": "",
+      "title": "User Interface Design",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": "CS220/CS320L/MATH320L"
+    },
+    {
+      "code": "CS620",
+      "category": "CS",
+      "area": "",
+      "title": "Theory of Computation",
+      "credits": 3,
+      "prereqs": [
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS622",
+      "category": "CS",
+      "area": "",
+      "title": "Theory of Formal Languages",
+      "credits": 3,
+      "prereqs": [
+        "CS220",
+        "CS450"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS624",
+      "category": "CS",
+      "area": "",
+      "title": "Analysis of Algorithms",
+      "credits": 3,
+      "prereqs": [
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS630",
+      "category": "CS",
+      "area": "",
+      "title": "Database Management Systems",
+      "credits": 3,
+      "prereqs": [
+        "CS240",
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": "also requires instructor permission"
+    },
+    {
+      "code": "CS634",
+      "category": "CS",
+      "area": "",
+      "title": "Architecture of Database Systems",
+      "credits": 3,
+      "prereqs": [
+        "CS430"
+      ],
+      "coreqs": [],
+      "note": "CS430 or CS630"
+    },
+    {
+      "code": "CS636",
+      "category": "CS",
+      "area": "",
+      "title": "Database Application Development",
+      "credits": 3,
+      "prereqs": [
+        "CS615",
+        "CS630"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS637",
+      "category": "CS",
+      "area": "",
+      "title": "Database-Backed Web Sites and Web Services",
+      "credits": 3,
+      "prereqs": [
+        "CS430",
+        "CS451"
+      ],
+      "coreqs": [],
+      "note": "(CS430 or CS630) and (CS451 or CS651)"
+    },
+    {
+      "code": "CS638",
+      "category": "CS",
+      "area": "",
+      "title": "Applied Machine Learning",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "no prereq listed on dept page"
+    },
+    {
+      "code": "CS642",
+      "category": "CS",
+      "area": "",
+      "title": "Cybersecurity in the Internet of Things",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS644",
+      "category": "CS",
+      "area": "",
+      "title": "Operating Systems",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "Requires CS641 (not in this catalog) or instructor permission"
+    },
+    {
+      "code": "CS646",
+      "category": "CS",
+      "area": "",
+      "title": "Computer Communication Networks",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "Requires CS641 (not in this catalog)"
+    },
+    {
+      "code": "CS648",
+      "category": "CS",
+      "area": "",
+      "title": "Wireless Networks and Mobile Computing",
+      "credits": 3,
+      "prereqs": [
+        "CS446"
+      ],
+      "coreqs": [],
+      "note": "CS446 or CS646"
+    },
+    {
+      "code": "CS651",
+      "category": "CS",
+      "area": "",
+      "title": "Compilers",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS420"
+      ],
+      "coreqs": [],
+      "note": "CS420 or CS622"
+    },
+    {
+      "code": "CS670",
+      "category": "CS",
+      "area": "",
+      "title": "Artificial Intelligence",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": "Also requires MATH470 (not in this catalog)"
+    },
+    {
+      "code": "CS671",
+      "category": "CS",
+      "area": "",
+      "title": "Machine Learning",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "no prereq listed on dept page"
+    },
+    {
+      "code": "CS675",
+      "category": "CS",
+      "area": "",
+      "title": "Computer Vision",
+      "credits": 3,
+      "prereqs": [
+        "CS310",
+        "CS220"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "CS680",
+      "category": "CS",
+      "area": "",
+      "title": "Object-Oriented Design and Programming",
+      "credits": 3,
+      "prereqs": [
+        "CS310"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "ENGL101",
+      "category": "GEN_ED",
+      "area": "",
+      "title": "Composition I",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "ENGL102",
+      "category": "GEN_ED",
+      "area": "",
+      "title": "Composition II",
+      "credits": 3,
+      "prereqs": [
+        "ENGL101"
+      ],
+      "coreqs": [],
+      "note": "sequence assumed; not verified on a catalog page"
+    },
+    {
+      "code": "MATH130",
+      "category": "DISTRIBUTION",
+      "area": "MT",
+      "title": "Precalculus",
+      "credits": 3,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "MATH115 (B) or ALEKS placement"
+    },
+    {
+      "code": "MATH140",
+      "category": "DISTRIBUTION",
+      "area": "MT",
+      "title": "Calculus I",
+      "credits": 4,
+      "prereqs": [],
+      "coreqs": [],
+      "note": "MATH130 (B) or ALEKS placement"
+    },
+    {
+      "code": "MATH141",
+      "category": "DISTRIBUTION",
+      "area": "MT",
+      "title": "Calculus II",
+      "credits": 4,
+      "prereqs": [
+        "MATH140"
+      ],
+      "coreqs": [],
+      "note": "MATH140 or MATH145, C- or better"
+    },
+    {
+      "code": "MATH260",
+      "category": "DISTRIBUTION",
+      "area": "MT",
+      "title": "Linear Algebra",
+      "credits": 3,
+      "prereqs": [
+        "MATH140"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "MATH345",
+      "category": "DISTRIBUTION",
+      "area": "",
+      "title": "Probability and Statistics",
+      "credits": 3,
+      "prereqs": [
+        "MATH141"
+      ],
+      "coreqs": [],
+      "note": ""
+    },
+    {
+      "code": "PHYSIC113",
+      "category": "DISTRIBUTION",
+      "area": "NS",
+      "title": "Fundamentals of Physics I",
+      "credits": 4,
+      "prereqs": [],
+      "coreqs": [
+        "MATH140",
+        "PHYSIC181"
+      ],
+      "note": ""
+    },
+    {
+      "code": "PHYSIC181",
+      "category": "DISTRIBUTION",
+      "area": "",
+      "title": "Physics Laboratory I",
+      "credits": 2,
+      "prereqs": [],
+      "coreqs": [
+        "PHYSIC113"
+      ],
+      "note": ""
+    },
+    {
+      "code": "PHYSIC114",
+      "category": "DISTRIBUTION",
+      "area": "NS",
+      "title": "Fundamentals of Physics II",
+      "credits": 4,
+      "prereqs": [
+        "PHYSIC113"
+      ],
+      "coreqs": [
+        "MATH141",
+        "PHYSIC182"
+      ],
+      "note": "PHYSIC113 with C- or better"
+    },
+    {
+      "code": "PHYSIC182",
+      "category": "DISTRIBUTION",
+      "area": "",
+      "title": "Physics Laboratory II",
+      "credits": 2,
+      "prereqs": [
+        "PHYSIC181"
+      ],
+      "coreqs": [
+        "PHYSIC114"
+      ],
+      "note": "PHYSIC181 with C- or better"
+    }
+  ]
+}

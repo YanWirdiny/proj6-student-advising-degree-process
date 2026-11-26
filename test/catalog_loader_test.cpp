@@ -13,6 +13,7 @@ static string writeFile(const string& name, const string& content) {
 
 static const string kRealCs    = string(PROJECT_DIR) + "/cs_courses.json";
 static const string kRealGenEd = string(PROJECT_DIR) + "/gen_ed_requirements.json";
+static const string kRealDetails = string(PROJECT_DIR) + "/course_details.json";
 
 // Small files shaped like the real ones, with the overlaps the real data has.
 static const char* kCsJson = R"json({
@@ -238,4 +239,168 @@ TEST(CheckLinksTest, RealFilesLinkUpExceptBC290) {
     EXPECT_FALSE(checkLinks(catalog, loadGenEd(kRealGenEd, errors), errors));
     ASSERT_EQ(errors.size(), 1u);
     EXPECT_NE(errors[0].find("BC290"), string::npos);
+}
+
+// ==================== loadCourseDetails ====================
+
+static const char* kDetailsJson = R"json({
+  "_meta": { "source": "test" },
+  "courses": [
+    { "code": "CS110", "category": "CS", "area": "MT", "title": "Introduction to Computing",
+      "credits": 4, "prereqs": [], "coreqs": [], "note": "" },
+    { "code": "CS210", "category": "CS", "area": "", "title": "Intermediate Computing",
+      "credits": 4, "prereqs": ["cs 110"], "coreqs": [], "note": "CS110 or CS/IT 115L" },
+    { "code": "MATH140", "category": "DISTRIBUTION", "area": "", "title": "Calculus I",
+      "credits": 4, "prereqs": [], "coreqs": [], "note": "" },
+    { "code": "CS341", "category": "CS", "area": "", "title": "Computer Architecture",
+      "credits": 3, "prereqs": [], "coreqs": ["CS341L"], "note": "" },
+    { "code": "CS341L", "category": "CS", "area": "", "title": "Computer Architecture Lab",
+      "credits": 1, "prereqs": [], "coreqs": ["CS341"], "note": "" }
+  ]
+})json";
+
+TEST(LoadCourseDetailsTest, FillsDetailsOnScrapedCourses) {
+    string cs = writeFile("cs.json", kCsJson), ge = writeFile("ge.json", kGenEdJson);
+    string details = writeFile("details.json", kDetailsJson);
+    Courses catalog;
+    vector<string> errors;
+    loadCourses(cs, ge, catalog, errors);
+    ASSERT_TRUE(loadCourseDetails(details, catalog, errors));
+    EXPECT_TRUE(errors.empty()) << errors[0];
+
+    const Course* cs210 = catalog.find("CS210");
+    EXPECT_EQ(cs210->name, "Intermediate Computing");
+    EXPECT_EQ(cs210->credits, 4);
+    EXPECT_EQ(cs210->prereqs, (vector<string>{ "CS110" }));   // "cs 110" normalized
+    EXPECT_EQ(cs210->note, "CS110 or CS/IT 115L");
+}
+
+TEST(LoadCourseDetailsTest, EmptyAreaKeepsScrapedArea) {
+    // An empty "area" in the details file means "unknown", not "remove the area".
+    string cs = writeFile("cs.json", kCsJson), ge = writeFile("ge.json", kGenEdJson);
+    string details = writeFile("details.json", kDetailsJson);
+    Courses catalog;
+    vector<string> errors;
+    loadCourses(cs, ge, catalog, errors);
+    loadCourseDetails(details, catalog, errors);
+    EXPECT_EQ(catalog.find("MATH140")->distArea, "MT");
+    EXPECT_EQ(catalog.find("MATH140")->credits, 4);
+}
+
+TEST(LoadCourseDetailsTest, AddsCoursesOnlyListedThere) {
+    string details = writeFile("details.json", kDetailsJson);
+    Courses catalog;
+    vector<string> errors;
+    loadCourseDetails(details, catalog, errors);
+    ASSERT_TRUE(catalog.contains("CS341L"));
+    EXPECT_EQ(catalog.find("CS341L")->credits, 1);
+    EXPECT_EQ(catalog.find("CS341")->coreqs, (vector<string>{ "CS341L" }));
+}
+
+TEST(LoadCourseDetailsTest, ReportsBadEntries) {
+    string details = writeFile("details_bad.json", R"json({ "courses": [
+      { "code": "CS110", "category": "MAJOR", "credits": 4 },
+      { "code": "CS210", "category": "CS", "credits": "four" },
+      { "code": "CS220", "category": "CS", "credits": -3 },
+      { "code": "CS240", "category": "CS", "credits": 3 }
+    ] })json");
+    Courses catalog;
+    vector<string> errors;
+    EXPECT_TRUE(loadCourseDetails(details, catalog, errors));
+    EXPECT_EQ(catalog.size(), 1u);          // only CS240 is valid
+    EXPECT_EQ(errors.size(), 3u);
+}
+
+TEST(LoadCourseDetailsTest, ConflictWithScrapedDataIsReported) {
+    string cs = writeFile("cs.json", kCsJson), ge = writeFile("ge.json", kGenEdJson);
+    string details = writeFile("details_conflict.json", R"json({ "courses": [
+      { "code": "MATH140", "category": "DISTRIBUTION", "area": "NS", "title": "Calculus I" }
+    ] })json");
+    Courses catalog;
+    vector<string> errors;
+    loadCourses(cs, ge, catalog, errors);
+    loadCourseDetails(details, catalog, errors);
+    ASSERT_EQ(errors.size(), 1u);
+    EXPECT_NE(errors[0].find("MATH140"), string::npos);
+    EXPECT_EQ(catalog.find("MATH140")->distArea, "MT");   // scraped value kept
+}
+
+TEST(LoadCourseDetailsTest, MissingFileFails) {
+    Courses catalog;
+    vector<string> errors;
+    EXPECT_FALSE(loadCourseDetails("/no/such/file.json", catalog, errors));
+    EXPECT_EQ(errors.size(), 1u);
+}
+
+TEST(LoadCourseDetailsTest, RealFiles) {
+    Courses catalog;
+    vector<string> errors;
+    loadCourses(kRealCs, kRealGenEd, catalog, errors);
+    ASSERT_TRUE(loadCourseDetails(kRealDetails, catalog, errors));
+    EXPECT_TRUE(errors.empty()) << errors.size() << " errors, first: " << errors[0];
+
+    EXPECT_EQ(catalog.size(), 524u);   // 523 scraped + CS341L, only in the details file
+    const Course* cs310 = catalog.find("CS310");
+    EXPECT_EQ(cs310->name, "Advanced Data Structures and Algorithms");
+    EXPECT_EQ(cs310->credits, 3);
+    EXPECT_EQ(cs310->prereqs, (vector<string>{ "CS210", "CS220", "CS240" }));
+    EXPECT_EQ(catalog.find("CS341")->coreqs, (vector<string>{ "CS341L" }));
+    EXPECT_EQ(catalog.find("MATH345")->distArea, "MT");    // kept from the scraped file
+    EXPECT_EQ(catalog.find("PHYSIC181")->distArea, "NS");
+}
+
+// ==================== checkCourseReferences ====================
+
+static Course withPrereqs(const string& code, vector<string> prereqs, vector<string> coreqs = {}) {
+    Course c;
+    c.code     = code;
+    c.category = CourseCategory::CS;
+    c.prereqs  = prereqs;
+    c.coreqs   = coreqs;
+    return c;
+}
+
+TEST(CheckCourseReferencesTest, CleanCatalogPasses) {
+    Courses catalog;
+    catalog.add(withPrereqs("CS110", {}));
+    catalog.add(withPrereqs("CS210", { "CS110" }));
+    catalog.add(withPrereqs("CS341", {}, { "CS341L" }));
+    catalog.add(withPrereqs("CS341L", {}, { "CS341" }));   // coreqs may point at each other
+    vector<string> errors;
+    EXPECT_TRUE(checkCourseReferences(catalog, errors));
+    EXPECT_TRUE(errors.empty());
+}
+
+TEST(CheckCourseReferencesTest, ReportsDanglingPrereqAndCoreq) {
+    Courses catalog;
+    catalog.add(withPrereqs("CS644", { "CS641" }));
+    catalog.add(withPrereqs("CS341", {}, { "CS341L" }));
+    vector<string> errors;
+    EXPECT_FALSE(checkCourseReferences(catalog, errors));
+    ASSERT_EQ(errors.size(), 2u);
+    // errors follow catalog order (sorted by code): CS341 before CS644
+    EXPECT_NE(errors[0].find("CS341L"), string::npos);
+    EXPECT_NE(errors[1].find("CS641"), string::npos);
+}
+
+TEST(CheckCourseReferencesTest, ReportsPrereqCycleOnce) {
+    // CS210 -> CS310 -> CS410 -> CS210
+    Courses catalog;
+    catalog.add(withPrereqs("CS210", { "CS410" }));
+    catalog.add(withPrereqs("CS310", { "CS210" }));
+    catalog.add(withPrereqs("CS410", { "CS310" }));
+    catalog.add(withPrereqs("CS110", {}));
+    vector<string> errors;
+    EXPECT_FALSE(checkCourseReferences(catalog, errors));
+    ASSERT_EQ(errors.size(), 1u);
+    EXPECT_NE(errors[0].find("cycle"), string::npos);
+}
+
+TEST(CheckCourseReferencesTest, RealFilesAreClean) {
+    Courses catalog;
+    vector<string> errors;
+    loadCourses(kRealCs, kRealGenEd, catalog, errors);
+    loadCourseDetails(kRealDetails, catalog, errors);
+    EXPECT_TRUE(checkCourseReferences(catalog, errors));
+    EXPECT_TRUE(errors.empty()) << errors[0];
 }

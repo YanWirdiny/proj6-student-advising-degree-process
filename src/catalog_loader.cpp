@@ -1,6 +1,8 @@
 #include "catalog_loader.h"
 #include "course_code.h"
 #include <fstream>
+#include <functional>
+#include <map>
 #include <nlohmann/json.hpp>
 
 using namespace std;
@@ -99,6 +101,86 @@ bool loadCourses(const string& csCoursesPath, const string& genEdPath,
         }
     }
     return true;
+}
+
+// "CS" / "GEN_ED" / "DISTRIBUTION" as written in course_details.json.
+static bool parseCategory(const string& text, CourseCategory& out) {
+    if (text == "CS")           { out = CourseCategory::CS;           return true; }
+    if (text == "GEN_ED")       { out = CourseCategory::GEN_ED;       return true; }
+    if (text == "DISTRIBUTION") { out = CourseCategory::DISTRIBUTION; return true; }
+    return false;
+}
+
+bool loadCourseDetails(const string& detailsPath, Courses& out, vector<string>& errors) {
+    json doc;
+    if (!readJson(detailsPath, doc, errors)) return false;
+
+    for (const json& entry : arrayAt(doc, "courses", detailsPath, errors)) {
+        Course c;
+        c.code     = stringField(entry, "code");
+        c.name     = stringField(entry, "title");
+        c.distArea = stringField(entry, "area");
+        c.note     = stringField(entry, "note");
+        c.prereqs  = stringList(entry, "prereqs");
+        c.coreqs   = stringList(entry, "coreqs");
+
+        string where = detailsPath + " " + (c.code.empty() ? string("courses") : c.code);
+        if (!parseCategory(stringField(entry, "category"), c.category)) {
+            errors.push_back(where + ": unknown category \"" + stringField(entry, "category") + "\"");
+            continue;
+        }
+        if (entry.contains("credits")) {
+            if (!entry["credits"].is_number() || entry["credits"].get<double>() < 0) {
+                errors.push_back(where + ": credits must be a number >= 0");
+                continue;
+            }
+            c.credits = entry["credits"].get<double>();
+        }
+        mergeInto(out, c, detailsPath, errors);
+    }
+    return true;
+}
+
+bool checkCourseReferences(const Courses& catalog, vector<string>& errors) {
+    bool ok = true;
+    for (const auto& [code, course] : catalog.all()) {
+        for (const string& p : course.prereqs)
+            if (!catalog.contains(p)) {
+                errors.push_back(code + ": prerequisite " + p + " is not in the catalog");
+                ok = false;
+            }
+        for (const string& p : course.coreqs)
+            if (!catalog.contains(p)) {
+                errors.push_back(code + ": co-requisite " + p + " is not in the catalog");
+                ok = false;
+            }
+    }
+
+    // Cycle check: depth-first search over prerequisites. A course reached again while it
+    // is still on the current path ("visiting") closes a cycle.
+    enum class Mark { NEW, VISITING, DONE };
+    map<string, Mark> mark;
+    function<bool(const string&)> visit = [&](const string& code) -> bool {
+        Mark& m = mark[code];
+        if (m == Mark::DONE)     return true;
+        if (m == Mark::VISITING) return false;
+        m = Mark::VISITING;
+        const Course* course = catalog.find(code);
+        if (course)
+            for (const string& p : course->prereqs)
+                if (!visit(p)) {
+                    mark[code] = Mark::DONE;   // so the same cycle is reported only once
+                    return false;
+                }
+        mark[code] = Mark::DONE;
+        return true;
+    };
+    for (const auto& [code, course] : catalog.all())
+        if (mark[code] == Mark::NEW && !visit(code)) {
+            errors.push_back(code + ": prerequisites form a cycle");
+            ok = false;
+        }
+    return ok;
 }
 
 vector<GenEdRequirement> loadGenEd(const string& genEdPath, vector<string>& errors) {

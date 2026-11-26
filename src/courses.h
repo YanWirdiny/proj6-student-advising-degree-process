@@ -14,7 +14,7 @@ public:
     bool add(Course course);
 
     // Same course seen in another source: adds it if new, otherwise fills the fields the
-    // stored copy is missing (name, distArea, credits, prereqs) and keeps the stronger
+    // stored copy is missing (name, distArea, credits, prereqs, coreqs, note) and keeps the stronger
     // category (CS > DISTRIBUTION > GEN_ED). Returns false and changes nothing when the
     // code is malformed or a field both copies have disagrees.
     bool merge(Course course);
